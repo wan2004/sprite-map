@@ -1,0 +1,2 @@
+#这句加入编译步骤中，即可导出lib
+ar  -r libgpscene.a  mapitem.o mapmanager.o mapinfo.o sprite.o mapbase.o
