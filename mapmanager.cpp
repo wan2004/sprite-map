@@ -23,8 +23,8 @@ bool MapManager::initMap(MapInfo *mapinfo)
         MapBase* base = list.at(i);
         int posXoffset,posYoffset;
         if(mapinfo->width){
-            posXoffset = ( i % mapinfo->width ) * 32;
-            posYoffset = ( i / mapinfo->width ) * 32;
+            posXoffset = ( i % mapinfo->width ) * DEF_MAPBASE_WIDTH;
+            posYoffset = ( i / mapinfo->width ) * DEF_MAPBASE_HEIGHT;
         }else {
             posXoffset = 0;
             posYoffset = 0;
@@ -53,14 +53,26 @@ bool MapManager::initMap(MapInfo *mapinfo)
     return this->initialized;
 }
 
-Sprite* MapManager::addSprite(Sprite *sprite,bool block,unsigned int level)
+Sprite* MapManager::addSprite(Sprite *sprite,QString type,unsigned int level)
 {
-    return 0;
+    if(!spriteMap.contains(type)){
+        QList<Sprite* >* list = new QList<Sprite*>();
+        list->append(sprite);
+        spriteMap.insert(type,list);
+    }else{
+        QList<Sprite* >* list = spriteMap.value(type);
+        list->append(sprite);
+    }
+    return sprite;
 }
 
-Sprite* MapManager::removeSprite(Sprite *sprite)
+Sprite* MapManager::removeSprite(Sprite *sprite,QString type)
 {
-    return 0;
+    if(spriteMap.contains(type)){
+        QList<Sprite* >* list = spriteMap.value(type);
+        list->removeAll(sprite);
+    }
+    return sprite;
 }
 
 bool MapManager::isInitialized()

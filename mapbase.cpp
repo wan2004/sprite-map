@@ -7,8 +7,8 @@ MapBase::MapBase(QPixmap* base,unsigned int hindex ,unsigned int vindex ,
 {
     this->iColnum = hnum;
     this->iRownum = vnum;
-    this->sizeV = 32;
-    this->sizeH = 32;
+    this->sizeV = DEF_MAPBASE_WIDTH;
+    this->sizeH = DEF_MAPBASE_HEIGHT;
     this->vindex = vindex;
     this->hindex = hindex;
     this->setPixmap(base);

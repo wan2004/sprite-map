@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QGraphicsScene>
+#include <QMap>
+#include <QList>
 class Sprite;
 class MapInfo;
 class MapBase;
@@ -12,9 +14,10 @@ class MapManager : public QObject
 public:
     explicit MapManager(QGraphicsScene* scene,QObject *parent = 0);
     bool initMap(MapInfo* mapinfo);
-    Sprite* addSprite(Sprite* sprite,bool block=true,unsigned int level=1);
-    Sprite* removeSprite(Sprite* sprite);
+    Sprite* addSprite(Sprite* sprite,QString type,unsigned int level=1);
+    Sprite* removeSprite(Sprite* sprite,QString type);
     bool isInitialized();
+    QMap< QString , QList<Sprite*>* > spriteMap;
 private:
     QGraphicsScene* drawScene;
     MapInfo* curMapInfo;

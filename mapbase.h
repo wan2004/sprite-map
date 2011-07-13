@@ -2,6 +2,10 @@
 #define MAPBASE_H
 #include <QGraphicsItem>
 #include "sprite.h"
+
+#define DEF_MAPBASE_WIDTH 32
+#define DEF_MAPBASE_HEIGHT 32
+
 class QPixmap;
 class MapBase : public Sprite
 {
