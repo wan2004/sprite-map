@@ -2,6 +2,7 @@
 #include "sprite.h"
 #include <QPixmap>
 #include <QGraphicsScene>
+#include <QDebug>
 #include "mapbase.h"
 #include "mapinfo.h"
 #include "mapmanager.h"
@@ -13,8 +14,8 @@ SpriteScene::SpriteScene(QGraphicsView *parent)
     this->setScene(this->_scene);
     this->setSceneRect(0,0,795,595);
     this->setWindowFlags(Qt::FramelessWindowHint);
-
-    MapInfo* mapinfo = new MapInfo();
+    QString basefile("base1.png");
+    MapInfo* mapinfo = new MapInfo(basefile);
     QString map1data("ansi1.mdt");
     mapinfo->readMap(map1data);
 

@@ -11,7 +11,7 @@ class MapInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit MapInfo(QObject *parent = 0);
+    MapInfo(QString &basefile,QObject *parent = 0);
     ~MapInfo();
     QString name;
     unsigned int width;

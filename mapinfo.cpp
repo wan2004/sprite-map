@@ -14,10 +14,13 @@
 #define MDT_BACKGROUND "background:"
 
 
-MapInfo::MapInfo(QObject *parent) :
+MapInfo::MapInfo(QString &basefile,QObject *parent) :
     QObject(parent)
 {
-
+    QImage image;
+    image.load(basefile);
+    this->base = new QPixmap();
+    this->base->convertFromImage(image);
 }
 MapInfo::~MapInfo()
 {
@@ -169,7 +172,7 @@ void MapInfo::analysisString(const QByteArray byte)//解析地图上面的物件
     }else if(str.contains(MDT_TYPE)){
         QString tmp = str.mid(strlen(MDT_TYPE),str.indexOf("\r\n") - strlen(MDT_TYPE));  // 根据 MDT_TYPE 得到对应 贴图文件
         this->type = QVariant(tmp).toInt();
-        base = new QPixmap("base"+tmp+".png");
+        if(base == 0)base = new QPixmap("base"+tmp+".png");
     }else if(str.contains(MDT_WIDTH)){
         this->width = QVariant(str.mid(strlen(MDT_WIDTH),str.indexOf("\r\n") - strlen(MDT_WIDTH))).toInt();
     }else if(str.contains(MDT_HEIGHT)){

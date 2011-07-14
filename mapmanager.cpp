@@ -25,6 +25,7 @@ bool MapManager::initMap(MapInfo *mapinfo)
         if(mapinfo->width){
             posXoffset = ( i % mapinfo->width ) * DEF_MAPBASE_WIDTH;
             posYoffset = ( i / mapinfo->width ) * DEF_MAPBASE_HEIGHT;
+
         }else {
             posXoffset = 0;
             posYoffset = 0;
@@ -56,13 +57,21 @@ bool MapManager::initMap(MapInfo *mapinfo)
 Sprite* MapManager::addSprite(Sprite *sprite,QString type,unsigned int level)
 {
     if(!spriteMap.contains(type)){
+
         QList<Sprite* >* list = new QList<Sprite*>();
         list->append(sprite);
         spriteMap.insert(type,list);
+        this->drawScene->addItem(sprite);
+
     }else{
         QList<Sprite* >* list = spriteMap.value(type);
-        list->append(sprite);
+
+        if(!list->contains(sprite)){ // 没有才加入
+            list->append(sprite);
+            this->drawScene->addItem(sprite);
+        }
     }
+
     return sprite;
 }
 
@@ -71,8 +80,12 @@ Sprite* MapManager::removeSprite(Sprite *sprite,QString type)
     if(spriteMap.contains(type)){
         QList<Sprite* >* list = spriteMap.value(type);
         list->removeAll(sprite);
+        this->drawScene->removeItem(sprite);
+        return sprite;
+    }else{
+        return 0;
     }
-    return sprite;
+
 }
 
 bool MapManager::isInitialized()
