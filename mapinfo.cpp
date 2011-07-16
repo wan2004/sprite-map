@@ -182,6 +182,11 @@ void MapInfo::analysisString(const QByteArray byte)//解析地图上面的物件
     }
 }
 
+
+/*
+*  根据 | 隔开解析各个属性
+*  背景|区块大小|所在点|穿透|调查|可破坏|特殊操作|类别名称|
+*/
 void MapInfo::analysisHandleLine(const QByteArray byte)
 {
     QString line(byte);
@@ -200,7 +205,7 @@ void MapInfo::analysisHandleLine(const QByteArray byte)
     MapItem* item = new MapItem(this->base);
     int tmp = 0;
     QString hi;
-    qDebug() << "tmp1:" << strList.at(1);
+
     if(tmp < strList.length()){
         hi = strList.at(tmp);
         item->hindex = QVariant(hi.mid(0,hi.indexOf(",") )).toUInt();
@@ -244,6 +249,11 @@ void MapInfo::analysisHandleLine(const QByteArray byte)
         item->mapZ = QVariant(hi).toInt();
         tmp++;
     }
-    qDebug() << "iRownum :" << item->iRownum;
+    if(tmp < strList.length()){
+        hi = strList.at(tmp);
+        item->typeName = hi;
+        tmp++;
+    }
+
     this->_item.append(item);
 }
