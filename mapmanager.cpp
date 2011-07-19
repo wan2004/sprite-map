@@ -43,10 +43,10 @@ bool MapManager::initMap(MapInfo *mapinfo)
         posXoffset = item->mapX * item->sizeH ;
         posYoffset = item->mapY * item->sizeV ;
         item->setPos(posXoffset ,posYoffset);
-        if(!this->drawScene->items().contains(item)){
-            this->drawScene->addItem(item);
-            item->setZValue(item->mapZ);
-        }
+
+        if(!this->drawScene->items().contains(item))
+            this->addSprite(item,item->typeName,item->mapZ);
+
     }
 
     this->drawScene->setBackgroundBrush(QBrush(curMapInfo->background));
@@ -54,7 +54,7 @@ bool MapManager::initMap(MapInfo *mapinfo)
     return this->initialized;
 }
 
-Sprite* MapManager::addSprite(Sprite *sprite,QString type,unsigned int level)
+Sprite* MapManager::addSprite(Sprite *sprite,QString type,int level)
 {
     if(!spriteMap.contains(type)){
 
@@ -71,6 +71,7 @@ Sprite* MapManager::addSprite(Sprite *sprite,QString type,unsigned int level)
             this->drawScene->addItem(sprite);
         }
     }
+    sprite->setZValue(level);
 
     return sprite;
 }

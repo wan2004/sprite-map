@@ -74,10 +74,10 @@ bool MapInfo::readMap(QString &path)
             mbase->hindex = col1;
 
             this->_data.append(mbase);
-            qDebug() << "row1 is " << row1;
-            qDebug() << "col1 is " << col1;
+            //qDebug() << "row1 is " << row1;
+            //qDebug() << "col1 is " << col1;
         }
-        qDebug()<< "mbase lenght is " << this->_data.length();
+        //qDebug()<< "mbase lenght is " << this->_data.length();
         file.close();
         return true;
     }else{
