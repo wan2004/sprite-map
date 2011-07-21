@@ -12,7 +12,11 @@
 #define MDT_WIDTH "width:"
 #define MDT_HEIGHT "height:"
 #define MDT_BACKGROUND "background:"
-
+#ifdef Q_WS_WIN
+#define CRLF "\r\n"
+#else
+#define CRLF "\n"
+#endif
 
 MapInfo::MapInfo(QString &basefile,QObject *parent) :
     QObject(parent)
@@ -94,13 +98,13 @@ bool MapInfo::writeMap(QString &path)
         QString dataformat;
         int i;
 
-        file.write((MDT_NAME+this->name+"\r\n").toLocal8Bit());
-        file.write((MDT_TYPE+QVariant(this->type).toString()+"\r\n").toLocal8Bit());
-        file.write((MDT_WIDTH+QVariant(this->width).toString()+"\r\n").toLocal8Bit());
-        file.write((MDT_HEIGHT+QVariant(this->height).toString()+"\r\n").toLocal8Bit());
-        file.write((MDT_BACKGROUND+this->background.name()+"\r\n").toLocal8Bit());
-        file.write((tr(SEPR_ITEM)+"\r\n").toLocal8Bit());
-        dataformat = ("%1,%2|%3,%4|%5,%6|%7|%8|%9|%10|%11|\r\n");
+        file.write((MDT_NAME+this->name+CRLF).toLocal8Bit());
+        file.write((MDT_TYPE+QVariant(this->type).toString()+CRLF).toLocal8Bit());
+        file.write((MDT_WIDTH+QVariant(this->width).toString()+CRLF).toLocal8Bit());
+        file.write((MDT_HEIGHT+QVariant(this->height).toString()+CRLF).toLocal8Bit());
+        file.write((MDT_BACKGROUND+this->background.name()+CRLF).toLocal8Bit());
+        file.write((tr(SEPR_ITEM)+CRLF).toLocal8Bit());
+        dataformat = ("%1,%2|%3,%4|%5,%6|%7|%8|%9|%10|%11|"CRLF);
         QList<MapItem*> list1 = getMapItemInfo();
         for(i=0;i<list1.length();i++)
         {
@@ -117,11 +121,11 @@ bool MapInfo::writeMap(QString &path)
                     .arg(QVariant(base->mapZ).toString());
             file.write(data.toUtf8());
         }
-        file.write((tr(SEPR)+"\r\n").toUtf8());
+        file.write((tr(SEPR)+CRLF).toUtf8());
 
         QList<MapBase*> list = getMapBaseInfo();
 
-        dataformat = ("%1,%2\r\n");
+        dataformat = ("%1,%2"CRLF);
         for(i=0;i<list.length();i++)
         {
             MapBase* base = list.at(i);
@@ -168,17 +172,17 @@ void MapInfo::analysisString(const QByteArray byte)//解析地图上面的物件
 {
     QString str(byte);
     if(str.contains(MDT_NAME)){
-        this->name = str.mid(strlen(MDT_NAME),str.indexOf("\r\n") - strlen(MDT_NAME));
+        this->name = str.mid(strlen(MDT_NAME),str.indexOf(CRLF) - strlen(MDT_NAME));
     }else if(str.contains(MDT_TYPE)){
-        QString tmp = str.mid(strlen(MDT_TYPE),str.indexOf("\r\n") - strlen(MDT_TYPE));  // 根据 MDT_TYPE 得到对应 贴图文件
+        QString tmp = str.mid(strlen(MDT_TYPE),str.indexOf(CRLF) - strlen(MDT_TYPE));  // 根据 MDT_TYPE 得到对应 贴图文件
         this->type = QVariant(tmp).toInt();
         if(base == 0)base = new QPixmap("base"+tmp+".png");
     }else if(str.contains(MDT_WIDTH)){
-        this->width = QVariant(str.mid(strlen(MDT_WIDTH),str.indexOf("\r\n") - strlen(MDT_WIDTH))).toInt();
+        this->width = QVariant(str.mid(strlen(MDT_WIDTH),str.indexOf(CRLF) - strlen(MDT_WIDTH))).toInt();
     }else if(str.contains(MDT_HEIGHT)){
-        this->height = QVariant(str.mid(strlen(MDT_HEIGHT),str.indexOf("\r\n") - strlen(MDT_HEIGHT))).toInt();
+        this->height = QVariant(str.mid(strlen(MDT_HEIGHT),str.indexOf(CRLF) - strlen(MDT_HEIGHT))).toInt();
     }else if(str.contains(MDT_BACKGROUND)){
-        this->background = QColor(str.mid(11,str.indexOf("\r\n") - 11));
+        this->background = QColor(str.mid(11,str.indexOf(CRLF) - 11));
     }
 }
 
