@@ -104,7 +104,7 @@ bool MapInfo::writeMap(QString &path)
         file.write((MDT_HEIGHT+QVariant(this->height).toString()+CRLF).toLocal8Bit());
         file.write((MDT_BACKGROUND+this->background.name()+CRLF).toLocal8Bit());
         file.write((tr(SEPR_ITEM)+CRLF).toLocal8Bit());
-        dataformat = ("%1,%2|%3,%4|%5,%6|%7|%8|%9|%10|%11|"CRLF);
+        dataformat = ("%1,%2|%3,%4|%5,%6|%7|%8|%9|%10|%11|%12|"CRLF);
         QList<MapItem*> list1 = getMapItemInfo();
         for(i=0;i<list1.length();i++)
         {
@@ -118,7 +118,8 @@ bool MapInfo::writeMap(QString &path)
                     QVariant(base->checkType).toString(),
                     QVariant(base->breakType).toString()
                     ).arg(QVariant(base->special).toString())
-                    .arg(QVariant(base->mapZ).toString());
+                    .arg(QVariant(base->mapZ).toString())
+                    .arg(QVariant(base->typeName).toString());
             file.write(data.toUtf8());
         }
         file.write((tr(SEPR)+CRLF).toUtf8());
@@ -189,7 +190,7 @@ void MapInfo::analysisString(const QByteArray byte)//解析地图上面的物件
 
 /*
 *  根据 | 隔开解析各个属性
-*  背景|区块大小|所在点|穿透|调查|可破坏|特殊操作|类别名称|
+*  背景|区块大小|所在点|穿透|调查|可破坏|特殊操作|深度|类别名称|
 */
 void MapInfo::analysisHandleLine(const QByteArray byte)
 {
