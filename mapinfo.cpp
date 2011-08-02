@@ -33,6 +33,10 @@ MapInfo::~MapInfo()
         delete _data.at(i);
     }
     this->_data.clear();
+    for(i=0;i < this->_item.length();i++){
+        delete _item.at(i);
+    }
+    this->_item.clear();
     delete base;
 }
 
@@ -152,6 +156,11 @@ QList<MapBase*> MapInfo::getMapBaseInfo()
 QList<MapItem*> MapInfo::getMapItemInfo()
 {
     return this->_item;
+}
+//不能删除
+QList<MapItem*>* MapInfo::getMapItemsPtr()
+{
+    return &(this->_item);
 }
 /*
  * Warning 不是同一个list时,上个list内指针内存泄露

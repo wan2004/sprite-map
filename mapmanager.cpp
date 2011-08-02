@@ -11,6 +11,15 @@ MapManager::MapManager(QGraphicsScene* scene,QObject *parent) :
     curMapInfo = 0;
     initialized = false;
 }
+MapManager::~MapManager()
+{
+
+    foreach(QString key , spriteMap.keys()){
+        delete spriteMap.value(key);
+    }
+
+    this->spriteMap.clear();
+}
 
 bool MapManager::initMap(MapInfo *mapinfo)
 {
@@ -39,10 +48,7 @@ bool MapManager::initMap(MapInfo *mapinfo)
 
     for(i = 0;i < listitem.length();i++){
         MapItem* item = listitem.at(i);
-        int posXoffset,posYoffset;
-        posXoffset = item->mapX * item->sizeH ;
-        posYoffset = item->mapY * item->sizeV ;
-        item->setPos(posXoffset ,posYoffset);
+        item->updateLocation();
 
         if(!this->drawScene->items().contains(item))
             this->addSprite(item,item->typeName,item->mapZ);

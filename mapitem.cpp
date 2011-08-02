@@ -12,5 +12,14 @@ MapItem::MapItem(QPixmap* base,QString tName,unsigned int hindex ,unsigned int v
     mapY = 0;
     mapZ = 0;
     typeName = tName;
+
 }
 
+//用mapX mapY 更新坐标系属性 x , y
+void MapItem::updateLocation()
+{
+    int posXoffset,posYoffset;
+    posXoffset = this->mapX * this->sizeH ;
+    posYoffset = this->mapY * this->sizeV ;
+    this->setPos(posXoffset ,posYoffset);
+}
